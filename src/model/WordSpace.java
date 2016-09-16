@@ -9,14 +9,15 @@ public class WordSpace {
 	private List<String> spamDocuments;
 	private List<String> nonspamDocuments;
 	private ArrayList<String> attributes;
-	
+	private ArrayList<VectorSpace> vspaces;
+
 	public WordSpace() {
 		importDataSet();
 	}
 	
 	public WordSpace(double sTresh, double nsTresh) {
-		spamTreshold = sTresh;
-		nonspamTreshold = nsTresh;
+		setSpamTreshold(sTresh);
+		setNonspamTreshold(nsTresh);
 		importDataSet();
 	}
 	
@@ -26,5 +27,38 @@ public class WordSpace {
 		nonspamDocuments = io.readListText("./not_spam.txt");
 	}
 	
+	
+	public void initImportantAttributes() {
+		ImportantWords iw = new ImportantWords(spamTreshold);
+		attributes = iw.getImportantWord(spamDocuments);
+		//don't forget to set treshold
+		iw.setTreshold(nonspamTreshold);
+		attributes.addAll(iw.getImportantWord(nonspamDocuments));
+	}
+	
+	//Getter and setter
+	public double getSpamTreshold() {
+		return spamTreshold;
+	}
+
+	public void setSpamTreshold(double spamTreshold) {
+		this.spamTreshold = spamTreshold;
+	}
+
+	public double getNonspamTreshold() {
+		return nonspamTreshold;
+	}
+
+	public void setNonspamTreshold(double nonspamTreshold) {
+		this.nonspamTreshold = nonspamTreshold;
+	}
+
+	public ArrayList<String> getAttributes() {
+		return attributes;
+	}
+
+	public ArrayList<VectorSpace> getVspaces() {
+		return vspaces;
+	}
 	
 }

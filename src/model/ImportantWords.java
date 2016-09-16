@@ -15,7 +15,7 @@ public class ImportantWords {
 		treshold = 5.0;
 	}
 	
-	public ImportantWords(int treshold) {
+	public ImportantWords(double treshold) {
 		this.setTreshold(treshold);
 	}
 	
