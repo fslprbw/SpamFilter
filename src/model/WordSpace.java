@@ -36,6 +36,10 @@ public class WordSpace {
 		attributes.addAll(iw.getImportantWord(nonspamDocuments));
 	}
 	
+	public void getVectorSpace() {
+		String S = "";
+	}
+	
 	//Getter and setter
 	public double getSpamTreshold() {
 		return spamTreshold;

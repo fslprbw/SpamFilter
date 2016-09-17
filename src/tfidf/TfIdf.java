@@ -188,8 +188,7 @@ public class TfIdf {
       Map<String, MutableInt> tf_scores = tf(s);
       for (String d : split) {
         if (map.get(d) == null) {
-          double score = tf_scores.get(d).getCounter() / (df_scores.get(d
-          ).getCounter() + 0.01);
+          double score = tf_scores.get(d).getCounter() / (df_scores.get(d).getCounter() + 0.01);
           map.put(d, score);
         }
       }

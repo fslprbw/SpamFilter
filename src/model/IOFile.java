@@ -59,7 +59,41 @@ public class IOFile {
 			br = new BufferedReader(new FileReader(FileName));
 			while ((line = br.readLine()) != null) {
 			    // use comma as separator
-				res.add(line);
+				line = line.trim().toLowerCase();
+				line = line.replaceAll("//s+", " ");
+				if(!line.isEmpty())
+					res.add(line);
+			}
+	
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return res;
+	}
+	
+	public List<String> readListTextSp(String FileName) {
+		BufferedReader br = null;
+		String line = "";
+		List<String> res = new ArrayList<String>();
+		try {
+	
+			br = new BufferedReader(new FileReader(FileName));
+			while ((line = br.readLine()) != null) {
+			    // use comma as separator
+				line = line.replaceAll("[^a-z A-Z]", "").trim().toLowerCase();
+				line = line.replaceAll("//s+", " ");
+				if(!line.isEmpty())
+					res.add(line);
 			}
 	
 		} catch (FileNotFoundException e) {
