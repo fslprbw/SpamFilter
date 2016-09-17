@@ -3,6 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import IndonesianNLP.IndonesianSentenceTokenizer;
+
 public class WordSpace {
 	private double spamTreshold;
 	private double nonspamTreshold;
@@ -21,6 +23,7 @@ public class WordSpace {
 		importDataSet();
 	}
 	
+	
 	public void importDataSet() {
 		IOFile io = new IOFile();
 		spamDocuments = io.readListText("./data/spam.txt");
@@ -28,7 +31,7 @@ public class WordSpace {
 	}
 	
 	
-	public void initImportantAttributes() {
+	public void loadAttributes() {
 		ImportantWords iw = new ImportantWords(spamTreshold);
 		attributes = iw.getImportantWord(spamDocuments);
 		//don't forget to set treshold
@@ -36,8 +39,41 @@ public class WordSpace {
 		attributes.addAll(iw.getImportantWord(nonspamDocuments));
 	}
 	
-	public void getVectorSpace() {
-		String S = "";
+	public void getAllVectorSpace() {
+		//spam data
+		for(String document : spamDocuments) {
+			vspaces.add(getVectorSpace(document, "spam"));
+		}
+		
+		//nonspamdata
+		for(String document : nonspamDocuments) {
+			vspaces.add(getVectorSpace(document, "bukan_spam"));
+		}
+	}
+	
+	public VectorSpace getVectorSpace(String sentence, String label) {
+		IndonesianSentenceTokenizer it = new IndonesianSentenceTokenizer();
+		ArrayList<String> words = it.tokenizeSentence(sentence);
+		ArrayList<Integer> vector = new ArrayList<Integer>();
+		for (String attr : attributes) {
+			int numSame = 0;
+			ArrayList<Integer> toRemove = new ArrayList<Integer>();
+			for (int i = 0; i < words.size(); i++) {
+				if (attr.equals(words.get(i))) {
+					numSame++;
+					toRemove.add(i);
+				}
+			}
+			
+			for(Integer idx : toRemove) {
+				words.remove(idx);
+			}
+			toRemove.clear();
+			
+			vector.add(numSame);
+		}
+		
+		return new VectorSpace(vector, label);
 	}
 	
 	//Getter and setter

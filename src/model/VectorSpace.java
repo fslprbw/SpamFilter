@@ -11,6 +11,10 @@ public class VectorSpace {
 		className = "undef";
 	}
 	
+	public VectorSpace(ArrayList<Integer> value) {
+		this.value = value;
+	}
+	
 	public VectorSpace(ArrayList<Integer> value, String className) {
 		this.value = value;
 		this.className = className;

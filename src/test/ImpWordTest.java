@@ -19,13 +19,13 @@ public class ImpWordTest {
 		}
 		
 		//list.clear();
-		list = io.readListTextSp("data/spam.txt");
+		list = io.readListTextSp("./data/spam.txt");
 		
 		List<String> res = iw.getImportantWord(list);
 		String st = "ab    abcA ssa";
 		st = st.replaceAll("\\s+", " ");
 		System.out.println(st);
-		//printList(res);
+		printList(res);
 		
 		
 	}
