@@ -6,6 +6,9 @@
 package textpreprocessing;
 
 import IndonesianNLP.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -96,10 +99,35 @@ public class TextPreprocessing {
         return m.replaceAll("");        
     }
     
+    public List<String> preprocess(List<String> documents, int option) {
+    	List<String> result = new ArrayList<String>();
+    	if (option == 1) {
+	    	for (String document : documents) {
+	    		result.add(strip1(document));
+	    	}
+    	} else if (option == 2) {
+	    	for (String document : documents) {
+	    		result.add(strip2(document));
+	    	}
+    		
+    	} else if (option == 3) {
+	    	for (String document : documents) {
+	    		result.add(strip3(document));
+	    	}
+    		
+    	} else if (option == 4) {
+	    	for (String document : documents) {
+	    		result.add(strip4(document));
+	    	}
+    	}
+    	
+    	return result;
+    }
+    
     public static void main(String[] args) {
         // TODO code application logic here
         
-        String sentence = "ayah.isiin pulsa as 25rb di no.625 334006 261.skrg pnting.";
+        String sentence = "ayah.isiin pulsa as 25rb di no.625 334006 261.skrg  pnting.";
         //String sentence = "Satu.Dua..Tiga...A";
         TextPreprocessing tp = new TextPreprocessing();
         

@@ -31,7 +31,11 @@ public class ImportantWords {
 		IndonesianSentenceTokenizer it = new IndonesianSentenceTokenizer();
 		for(String sentence : documents) {
 			ArrayList<String> words = it.tokenizeSentence(sentence);
-			accWords.addAll(words);
+			for(int i = 0; i < words.size(); i++) {
+				if (words.get(i) != null && !words.get(i).isEmpty()) {
+					accWords.add(words.get(i));
+				}
+			}
 		}
 		return getUniqueWords(accWords);
 	}

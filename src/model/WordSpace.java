@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import IndonesianNLP.IndonesianSentenceTokenizer;
+import textpreprocessing.TextPreprocessing;
 
 public class WordSpace {
 	private double spamTreshold;
@@ -27,7 +28,11 @@ public class WordSpace {
 	public void importDataSet() {
 		IOFile io = new IOFile();
 		spamDocuments = io.readListText("./data/spam.txt");
-		nonspamDocuments = io.readListText("./not_spam.txt");
+		nonspamDocuments = io.readListText("./not_spam.txt");		
+		//Preprocess
+		TextPreprocessing tp = new TextPreprocessing();
+		spamDocuments = tp.preprocess(spamDocuments, 4);
+		nonspamDocuments = tp.preprocess(nonspamDocuments, 4);
 	}
 	
 	
