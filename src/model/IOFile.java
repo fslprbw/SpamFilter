@@ -90,7 +90,7 @@ public class IOFile {
 			br = new BufferedReader(new FileReader(FileName));
 			while ((line = br.readLine()) != null) {
 			    // use comma as separator
-				line = line.replaceAll("[^a-z A-Z]", "").trim().toLowerCase();
+				line = line.replaceAll("[^a-z A-Z]", " ").trim().toLowerCase();
 				line = line.replaceAll("//s+", " ");
 				if(!line.isEmpty())
 					res.add(line);

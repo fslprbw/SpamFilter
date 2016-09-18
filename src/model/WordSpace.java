@@ -30,8 +30,8 @@ public class WordSpace {
 		//default value
 		
 		vspaces = new ArrayList<VectorSpace>();
-		setSpamTreshold(1.0);
-		setNonspamTreshold(1.0);
+		setSpamTreshold(0.5);
+		setNonspamTreshold(0.5);
 		importDataSet();
 	}
 	
@@ -50,8 +50,8 @@ public class WordSpace {
 		vspaces = new ArrayList<VectorSpace>();
 		setSpamTreshold(sTresh);
 		setNonspamTreshold(nsTresh);
-		spamfile = "./data/spam.txt";
-		nonspamfile = "./data/spam.txt";
+		this.spamfile = spamfile;
+		this.nonspamfile = nonspamfile;
 		importDataSet();
 	}
 	
@@ -63,6 +63,11 @@ public class WordSpace {
 		TextPreprocessing tp = new TextPreprocessing();
 		spamDocuments = tp.preprocess(spamDocuments, 4);
 		nonspamDocuments = tp.preprocess(nonspamDocuments, 4);
+	}
+	
+	public void loadTest(ArrayList<String> attrs) {
+		attributes = attrs;
+		getAllVectorSpace();
 	}
 	
 	public void load() {
@@ -109,8 +114,14 @@ public class WordSpace {
 			ins.setValue(fvWekaAttributes.get(i), vs.getClassName());
 			
 			trainingSet.add(ins);
-		 }		 
+		 }
+		 //saveModel(trainingSet);
 		 return trainingSet;
+	}
+	
+	public void saveModel(Instances instances) {
+		IOFile io = new IOFile();
+		io.writeText("vs_model.arff", instances.toString());
 	}
 	
 	public void getAllVectorSpace() {
