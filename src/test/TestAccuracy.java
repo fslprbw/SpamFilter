@@ -1,7 +1,6 @@
 package test;
 
 import classifier.J48Filter;
-import model.IOFile;
 import model.WordSpace;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -31,12 +30,9 @@ public class TestAccuracy {
 	
 	public void test() {
 		System.out.println("Total data = " + dataTest.size());
-		String acc = "";
 		for(int i = 0; i < dataTest.size(); i++) {
 			Instance ins = dataTest.get(i);
 			int classVal = (int) dataTest.get(i).classValue();
-			
-			acc +=  ins.toString() + "\n";
 			int expectedClassVal = j48.classifyIdx(ins);
 			if (classVal == expectedClassVal) {
 				nTrue++;
@@ -44,8 +40,6 @@ public class TestAccuracy {
 				nFalse++;
 			}
 		}
-		IOFile ie  = new IOFile();
-		ie.writeText("halo.txt", acc);
 		System.out.println("Benar = " + nTrue);
 		System.out.println("Salah = " + nFalse);
 		double accuracy = (double)nTrue / (nTrue + nFalse) * 100;

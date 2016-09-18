@@ -94,8 +94,9 @@ public class WordSpace {
 				attributes.add(attr1str);
 			}
 		}
-		attributes = (ArrayList<String>) iw.getUniqueWords(attributes);
 		
+		attributes = (ArrayList<String>) iw.getUniqueWords(attributes);
+		attributes.add("number_words");
 	}
 	
 	// Call load before calling this method
@@ -111,7 +112,6 @@ public class WordSpace {
 		 Attribute ClassAttribute = new Attribute("theClass", fvClassVal);
 		 int classIdx = fvWekaAttributes.size();
 		 fvWekaAttributes.add(ClassAttribute);
-		 	 
 		 //create empty training set
 		 Instances trainingSet = new Instances("spam_filtering", fvWekaAttributes, vspaces.size() + 10);
 		 trainingSet.setClassIndex(classIdx);
@@ -121,9 +121,11 @@ public class WordSpace {
 			Instance ins = new DenseInstance(fvWekaAttributes.size());
 			ArrayList<Integer> vector = vs.getValue();
 			int i;
-			for(i = 0; i < vector.size(); i++) {
+			for(i = 0; i < vector.size()-1; i++) {
 				ins.setValue(fvWekaAttributes.get(i), vector.get(i));
 			}
+			ins.setValue(fvWekaAttributes.get(i), vs.getLength());
+			i++;
 			ins.setValue(fvWekaAttributes.get(i), vs.getClassName());
 			
 			trainingSet.add(ins);
@@ -139,9 +141,6 @@ public class WordSpace {
 	
 	public void getAllVectorSpace() {
 		//spam data
-		for(String document : spamDocuments) {
-			vspaces.add(getVectorSpace(document, WordSpace.spamclass));
-		}
 		for(int i = 0; i < spamDocuments.size(); i++) {
 			vspaces.add(getVectorSpace(spamDocuments.get(i), WordSpace.spamclass));
 			if(i < nonspamDocuments.size()) {
@@ -153,6 +152,7 @@ public class WordSpace {
 	public VectorSpace getVectorSpace(String sentence, String label) {
 		IndonesianSentenceTokenizer it = new IndonesianSentenceTokenizer();
 		ArrayList<String> words = it.tokenizeSentence(sentence);
+		int nWords = words.size();
 		ArrayList<Integer> vector = new ArrayList<Integer>();
 		for (String attr : attributes) {
 			int numSame = 0;
@@ -172,7 +172,7 @@ public class WordSpace {
 			vector.add(numSame);
 		}
 		
-		return new VectorSpace(vector, label);
+		return new VectorSpace(vector, nWords, label);
 	}
 	
 	@Override

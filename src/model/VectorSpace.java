@@ -5,18 +5,20 @@ import java.util.ArrayList;
 public class VectorSpace {
 	private ArrayList<Integer> value;
 	private String className;
-	
+	private int length;
 	public VectorSpace() {
 		value = new ArrayList<Integer>();
 		className = "undef";
+		setLength(0);
 	}
 	
 	public VectorSpace(ArrayList<Integer> value) {
 		this.value = value;
 	}
 	
-	public VectorSpace(ArrayList<Integer> value, String className) {
+	public VectorSpace(ArrayList<Integer> value, int length, String className) {
 		this.value = value;
+		this.setLength(length);
 		this.className = className;
 	}
 	
@@ -39,5 +41,13 @@ public class VectorSpace {
 	
 	public void setValue(ArrayList<Integer> val) {
 		value = val;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
 	}
 }
