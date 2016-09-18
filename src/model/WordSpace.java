@@ -76,11 +76,24 @@ public class WordSpace {
 	}
 	
 	public void loadAttributes() {
+		attributes = new ArrayList<String>();
 		ImportantWords iw = new ImportantWords(spamTreshold);
-		attributes = iw.getImportantWord(spamDocuments);
+		ArrayList<String> attr1 = iw.getImportantWord(spamDocuments);
 		//don't forget to set treshold
 		iw.setTreshold(nonspamTreshold);
-		attributes.addAll(iw.getImportantWord(nonspamDocuments));
+		ArrayList<String> attr2 = iw.getImportantWord(nonspamDocuments);
+		for(int i = 0; i < attr1.size(); i++) {
+			if(i < attr2.size()) {
+				String attr2str = attr2.get(i);
+				if(attr2str.length() > 2) {
+					attributes.add(attr2str);
+				}
+			}
+			String attr1str = attr1.get(i);
+			if(attr1str.length() > 2) {
+				attributes.add(attr1str);
+			}
+		}
 		attributes = (ArrayList<String>) iw.getUniqueWords(attributes);
 		
 	}
@@ -129,10 +142,11 @@ public class WordSpace {
 		for(String document : spamDocuments) {
 			vspaces.add(getVectorSpace(document, WordSpace.spamclass));
 		}
-		
-		//nonspamdata
-		for(String document : nonspamDocuments) {
-			vspaces.add(getVectorSpace(document, WordSpace.nonspamclass));
+		for(int i = 0; i < spamDocuments.size(); i++) {
+			vspaces.add(getVectorSpace(spamDocuments.get(i), WordSpace.spamclass));
+			if(i < nonspamDocuments.size()) {
+				vspaces.add(getVectorSpace(nonspamDocuments.get(i), WordSpace.nonspamclass));
+			}
 		}
 	}
 	

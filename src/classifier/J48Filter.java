@@ -28,7 +28,6 @@ public class J48Filter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		data.setClassIndex(data.numAttributes() - 1); 
 		initJ48();
 	}
 	
@@ -53,6 +52,7 @@ public class J48Filter {
 	}
 	
 	private void initJ48() {
+		data.setClassIndex(data.numAttributes() - 1); 
 		j48 = new J48();
 		j48.setUnpruned(false);
 		try {
