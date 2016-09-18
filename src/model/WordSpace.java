@@ -5,6 +5,10 @@ import java.util.List;
 
 import IndonesianNLP.IndonesianSentenceTokenizer;
 import textpreprocessing.TextPreprocessing;
+import weka.core.Attribute;
+import weka.core.DenseInstance;
+import weka.core.Instance;
+import weka.core.Instances;
 
 public class WordSpace {
 	private double spamTreshold;
@@ -13,7 +17,9 @@ public class WordSpace {
 	private List<String> nonspamDocuments;
 	private ArrayList<String> attributes;
 	private ArrayList<VectorSpace> vspaces;
-
+	public static final String spamclass = "spam";
+	public static final String nonspamclass = "bukan_spam";
+	
 	public WordSpace() {
 		importDataSet();
 	}
@@ -35,6 +41,10 @@ public class WordSpace {
 		nonspamDocuments = tp.preprocess(nonspamDocuments, 4);
 	}
 	
+	public void load() {
+		loadAttributes();
+		getAllVectorSpace();
+	}
 	
 	public void loadAttributes() {
 		ImportantWords iw = new ImportantWords(spamTreshold);
@@ -44,15 +54,48 @@ public class WordSpace {
 		attributes.addAll(iw.getImportantWord(nonspamDocuments));
 	}
 	
+	// Call load before calling this method
+	public Instances getTrainingSetInstances() {
+		ArrayList<Attribute> fvWekaAttributes = new ArrayList<Attribute>();
+		for(int i = 0; i < attributes.size(); i++) {
+			fvWekaAttributes.add(new Attribute(attributes.get(i)));
+		}
+		// Declare the class attribute along with its values
+		 ArrayList<String> fvClassVal = new ArrayList<String>();
+		 fvClassVal.add(WordSpace.spamclass);
+		 fvClassVal.add(WordSpace.nonspamclass);
+		 Attribute ClassAttribute = new Attribute("theClass", fvClassVal);
+		 int classIdx = fvWekaAttributes.size();
+		 fvWekaAttributes.add(ClassAttribute);
+		 	 
+		 //create empty training set
+		 Instances trainingSet = new Instances("spam_filtering", fvWekaAttributes, vspaces.size() + 10);
+		 trainingSet.setClassIndex(classIdx);
+		 
+		 //add vector space into training set
+		 for(VectorSpace vs : vspaces) {
+			Instance ins = new DenseInstance(fvWekaAttributes.size());
+			ArrayList<Integer> vector = vs.getValue();
+			int i;
+			for(i = 0; i < vector.size(); i++) {
+				ins.setValue(fvWekaAttributes.get(i), vector.get(i));
+			}
+			ins.setValue(fvWekaAttributes.get(i), vs.getClassName());
+			
+			trainingSet.add(ins);
+		 }		 
+		 return trainingSet;
+	}
+	
 	public void getAllVectorSpace() {
 		//spam data
 		for(String document : spamDocuments) {
-			vspaces.add(getVectorSpace(document, "spam"));
+			vspaces.add(getVectorSpace(document, WordSpace.spamclass));
 		}
 		
 		//nonspamdata
 		for(String document : nonspamDocuments) {
-			vspaces.add(getVectorSpace(document, "bukan_spam"));
+			vspaces.add(getVectorSpace(document, WordSpace.nonspamclass));
 		}
 	}
 	
