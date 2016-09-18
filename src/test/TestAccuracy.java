@@ -21,9 +21,7 @@ public class TestAccuracy {
 		WordSpace wsTest = new WordSpace(tresholdSpam, tresholdNonSpam, "./data/spam_test.txt", "./data/not_spam_test.txt");
 		wsTest.loadTest(ws.getAttributes());
 		dataTest = wsTest.getTrainingSetInstances();
-		
 		j48 = new J48Filter(dataTraining);
-		
 		nTrue = 0;
 		nFalse = 0;
 	}
