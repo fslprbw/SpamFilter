@@ -32,7 +32,7 @@ public class ImportantWords {
 		for(String sentence : documents) {
 			ArrayList<String> words = it.tokenizeSentence(sentence);
 			for(int i = 0; i < words.size(); i++) {
-				if (words.get(i) != null && !words.get(i).isEmpty()) {
+				if (words.get(i) != null && words.size()>2) {
 					accWords.add(words.get(i));
 				}
 			}

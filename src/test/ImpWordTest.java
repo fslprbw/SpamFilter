@@ -7,6 +7,7 @@ import model.*;
 
 public class ImpWordTest {
 	public static void main (String[] args) {
+		/*
 		IOFile io = new IOFile();
 		ImportantWords iw = new ImportantWords(1);
 		List<String> list = new ArrayList<String>();
@@ -26,6 +27,11 @@ public class ImpWordTest {
 		st = st.replaceAll("\\s+", " ");
 		System.out.println(st);
 		printList(res);
+		*/
+		WordSpace ws = new WordSpace();
+		ws.load();
+		ws.getTrainingSetInstances();
+		
 		
 		
 	}

@@ -17,24 +17,48 @@ public class WordSpace {
 	private List<String> nonspamDocuments;
 	private ArrayList<String> attributes;
 	private ArrayList<VectorSpace> vspaces;
+	
+	private String spamfile;
+	private String nonspamfile;
+	
 	public static final String spamclass = "spam";
 	public static final String nonspamclass = "bukan_spam";
 	
 	public WordSpace() {
+		spamfile = "./data/spam.txt";
+		nonspamfile = "./data/spam.txt";
+		//default value
+		
+		vspaces = new ArrayList<VectorSpace>();
+		setSpamTreshold(1.0);
+		setNonspamTreshold(1.0);
 		importDataSet();
 	}
 	
 	public WordSpace(double sTresh, double nsTresh) {
+		vspaces = new ArrayList<VectorSpace>();
 		setSpamTreshold(sTresh);
 		setNonspamTreshold(nsTresh);
+		spamfile = "./data/spam.txt";
+		nonspamfile = "./data/spam.txt";
 		importDataSet();
 	}
 	
+	public WordSpace(double sTresh, double nsTresh, String spamfile, String nonspamfile) {
+		this.spamfile = spamfile;
+		this.nonspamfile = nonspamfile;
+		vspaces = new ArrayList<VectorSpace>();
+		setSpamTreshold(sTresh);
+		setNonspamTreshold(nsTresh);
+		spamfile = "./data/spam.txt";
+		nonspamfile = "./data/spam.txt";
+		importDataSet();
+	}
 	
 	public void importDataSet() {
 		IOFile io = new IOFile();
-		spamDocuments = io.readListText("./data/spam.txt");
-		nonspamDocuments = io.readListText("./not_spam.txt");		
+		spamDocuments = io.readListTextSp(spamfile);
+		nonspamDocuments = io.readListTextSp(nonspamfile);		
 		//Preprocess
 		TextPreprocessing tp = new TextPreprocessing();
 		spamDocuments = tp.preprocess(spamDocuments, 4);
@@ -52,6 +76,8 @@ public class WordSpace {
 		//don't forget to set treshold
 		iw.setTreshold(nonspamTreshold);
 		attributes.addAll(iw.getImportantWord(nonspamDocuments));
+		attributes = (ArrayList<String>) iw.getUniqueWords(attributes);
+		
 	}
 	
 	// Call load before calling this method
