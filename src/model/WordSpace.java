@@ -81,6 +81,25 @@ public class WordSpace {
 		return new VectorSpace(vector, label);
 	}
 	
+	@Override
+	public String toString() {
+		String res = "";
+		for(String attr : attributes) {
+			res += attr + ", ";
+		}
+		res = res.substring(0, res.length()-2) + "\n";
+		
+		for(VectorSpace vsp : vspaces) {
+			String acc = "";
+			for(Integer idx : vsp.getValue()) {
+				acc += idx.toString() + ", ";
+			}
+			acc += vsp.getClassName() + "\n";
+			res += acc;
+		}
+		return res;
+	}
+	
 	//Getter and setter
 	public double getSpamTreshold() {
 		return spamTreshold;
